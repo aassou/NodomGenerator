@@ -61,7 +61,7 @@ session_start();
 				      <input type="text" name="componentName" placeholder="like Student, Person ..." />
 				    </div>
 				    <div class="large-4 medium-4 columns">
-				      <label>Location File</label>
+				      <label>Project Path</label>
 				      <input type="text" name="componentLocation" placeholder="c:\wamp\www\example..." value="c:/wamp/www/gelm/" />
 				    </div>
 				    <div class="large-4 medium-4 columns">
