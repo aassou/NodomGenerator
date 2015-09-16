@@ -21,14 +21,16 @@ if(isset($_POST['attributes']) and !empty($_POST['attributes'])){
 	$componentModel = ucfirst($componentName).".php";
 	$componentModelManager = ucfirst($componentName)."Manager.php";
 	$componentSql = "t_".$componentName.".sql";
+    $componentActionController = ucfirst($componentName)."ActionController.php";
 	
+    //componentLocation
+    $componentModelLocation = $_SESSION['componentLocation']."/model/".$componentModel;
+    $componentModelManagerLocation = $_SESSION['componentLocation']."/model/".$componentModelManager;
+    $componentSqlLocation = $_SESSION['componentLocation']."/db/".$componentSql;
+    $componentActionControllerLocation = $_SESSION['componentLocation']."/controller/".$componentActionController;
 	/************************************************************************************
 	 ********* 		        		ComponentModel Creation                     *********           
 	 ************************************************************************************/
-	//componentLocation
-	$componentModelLocation = $_SESSION['componentLocation']."/".$componentModel;
-	$componentModelManagerLocation = $_SESSION['componentLocation']."/".$componentModelManager;
-	$componentSqlLocation = $_SESSION['componentLocation']."/".$componentSql;
 	//complete processing
 	
 	//create class name
@@ -40,7 +42,9 @@ if(isset($_POST['attributes']) and !empty($_POST['attributes'])){
 	foreach($attributes as $attribute){
 		$codeModel .= "\tprivate \$_".$attribute.";\n";
 	}
-	
+    $codeModel .= "\tprivate \$_created;\n";
+	$codeModel .= "\tprivate \$_createdBy;\n";
+    
 	//create constructor and hydrate method
 	$codeModel .= "\n\t//le constructeur
     public function __construct(\$data){
@@ -67,7 +71,13 @@ if(isset($_POST['attributes']) and !empty($_POST['attributes'])){
 		\$this->_".$attribute." = \$".$attribute.";
    	}\n\n";
 	}
-	
+    $codeModel .= "\tpublic function setCreated(\$created){
+        \$this->_created = \$created;
+    }\n\n";
+	$codeModel .= "\tpublic function setCreatedBy(\$createdBy){
+        \$this->_createdBy = \$createdBy;
+    }\n\n";
+    
 	//create getters
 	$codeModel .= "\t//getters\n";
 	$codeModel .= "\tpublic function id(){
@@ -78,6 +88,12 @@ if(isset($_POST['attributes']) and !empty($_POST['attributes'])){
 		return \$this->_".$attribute.";
    	}\n\n";
 	}
+    $codeModel .= "\tpublic function created(){
+        return \$this->_created;
+    }\n\n";
+    $codeModel .= "\tpublic function createdBy(){
+        return \$this->_createdBy;
+    }\n\n";
 	//end of class
 	$codeModel .= "}";
 	
@@ -112,14 +128,16 @@ if(isset($_POST['attributes']) and !empty($_POST['attributes'])){
 	 */
 	$codeModelManager .= "\tpublic function add(".ucfirst($componentName)." \$".$componentName."){
     	\$query = \$this->_db->prepare(' INSERT INTO t_".$componentName." (\n\t\t";
-	$codeModelManager .= implode(",", $attributes);
-	$codeModelManager .= ")";
+	$codeModelManager .= implode(", ", $attributes);
+	$codeModelManager .= ", created, createdBy)";
 	$codeModelManager .= "\n\t\tVALUES (";
-	$codeModelManager .= ":".implode(",", $attributes);
-	$codeModelManager .= ")')\n\t\tor die (print_r(\$this->_db->errorInfo()));\n";
+	$codeModelManager .= ":".implode(", :", $attributes);
+	$codeModelManager .= ", :created, :createdBy)')\n\t\tor die (print_r(\$this->_db->errorInfo()));\n";
 	foreach($attributes as $attribute){
 		$codeModelManager .= "\t\t\$query->bindValue(':".$attribute."', \$".$componentName."->".$attribute."());\n";	
 	}
+    $codeModelManager .= "\t\t\$query->bindValue(':created', ".$componentName."created());\n";
+    $codeModelManager .= "\t\t\$query->bindValue(':createdBy', ".$componentName."createdBy());\n";
 	$codeModelManager .= "\t\t\$query->execute();\n\t\t\$query->closeCursor();\n\t}\n\n";
 	/**
 	 * create update method
@@ -131,7 +149,7 @@ if(isset($_POST['attributes']) and !empty($_POST['attributes'])){
 	for($i=0; $i<count($attributes2); $i++){
 		$attributes2[$i] .= "=:".$attributes[$i]; 
 	}
-	$codeModelManager .= implode(",", $attributes2);
+	$codeModelManager .= implode(", ", $attributes2);
 	$codeModelManager .= "\n\t\tWHERE id=:id";
 	$codeModelManager .= "')\n\t\tor die (print_r(\$this->_db->errorInfo()));\n";
 	$codeModelManager .= "\t\t\$query->bindValue(':id', \$".$componentName."->id());\n";
@@ -169,7 +187,7 @@ if(isset($_POST['attributes']) and !empty($_POST['attributes'])){
 		ORDER BY id DESC');\n";
 	$codeModelManager .= "\t\twhile(\$data = \$query->fetch(PDO::FETCH_ASSOC)){\n";
 	$codeModelManager .= "\t\t\t\$".$componentName."s[] = new ".ucfirst($componentName)."(\$data);\n";
-	$codeModelManager .= "\t\t}\n\t\t\$query->closeCursor();\n\t\treturn \$".$componentName."s;\n\t}\n";
+	$codeModelManager .= "\t\t}\n\t\t\$query->closeCursor();\n\t\treturn \$".$componentName."s;\n\t}\n\n";
 	/**
 	 * create getComponentsByLimits method
 	 */
@@ -179,7 +197,7 @@ if(isset($_POST['attributes']) and !empty($_POST['attributes'])){
 		ORDER BY id DESC LIMIT '.\$begin.', '.\$end);\n";
 	$codeModelManager .= "\t\twhile(\$data = \$query->fetch(PDO::FETCH_ASSOC)){\n";
 	$codeModelManager .= "\t\t\t\$".$componentName."s[] = new ".ucfirst($componentName)."(\$data);\n";
-	$codeModelManager .= "\t\t}\n\t\t\$query->closeCursor();\n\t\treturn \$".$componentName."s;\n\t}\n";
+	$codeModelManager .= "\t\t}\n\t\t\$query->closeCursor();\n\t\treturn \$".$componentName."s;\n\t}\n\n";
 	/**
 	 * create getLastID method
 	 */
@@ -193,7 +211,7 @@ if(isset($_POST['attributes']) and !empty($_POST['attributes'])){
 	$codeModelManager .= "}";
 	
 	//process complete
-	$ressourceModelManager = fopen($componentModelLocation, "w");
+	$ressourceModelManager = fopen($componentModelManagerLocation, "w");
 	fwrite($ressourceModelManager, $codeModelManager);
 	fclose($ressourceModelManager);
 	/************************************************************************************
@@ -206,12 +224,104 @@ if(isset($_POST['attributes']) and !empty($_POST['attributes'])){
 	for($i=0; $i<count($attributes); $i++){
 		$codeSql .= "\t".$attributes[$i]." ".$attributesTypes[$i]." DEFAULT NULL,\n";
 	}
+    $codeSql .= "\tcreated DATETIME DEFAULT NULL,\n";
+    $codeSql .= "\tcreatedBy VARCHAR(50) DEFAULT NULL,\n";
 	$codeSql .= "\tPRIMARY KEY (id)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 	//process complete
 	$ressourceSql = fopen($componentSqlLocation, "w");
 	fwrite($ressourceSql, $codeSql);
 	fclose($ressourceSql);
 	
+    /************************************************************************************
+     *********                      ComponentActionController Creation                     *********           
+     ************************************************************************************/
+    //begin processing
+    $codeActionController = "<?php\n
+    //classes loading begin
+    function classLoad (\$myClass) {
+        if(file_exists('../model/'.\$myClass.'.php')){
+            include('../model/'.\$myClass.'.php');
+        }
+        elseif(file_exists('../controller/'.\$myClass.'.php')){
+            include('../controller/'.\$myClass.'.php');
+        }
+    }
+    spl_autoload_register(\"classLoad\"); 
+    include('../config.php');  
+    include('../lib/image-processing.php');
+    //classes loading end
+    session_start();
+    
+    //post input processing
+    \$action = htmlentities(\$_POST['action']);
+    //This var contains result message of CRUD action
+    \$actionMessage = \"\";
+    \$typeMessage = \"\";\n";
+    
+    $codeActionController .=
+    "\t//Action Add Processing Begin
+    \tif(\$action == \"add\"){
+        if( !empty(\$_POST['".$attributes[0]."']) ){\n";
+            foreach($attributes as $attribute){
+                $codeActionController .= "\t\t\t\$".$attribute." = htmlentities(\$_POST['".$attribute."']);\n";
+            }
+            $codeActionController .= "\t\t\t\$createdBy = \$_SESSION['userMerlaTrav']->login();
+            \$created = date('Y-m-d h:i:s');
+            //create object
+            \$".$componentName." = new ".ucfirst($componentName)."(array(\n";
+            foreach($attributes as $attribute){
+                $codeActionController .= "\t\t\t\t'".$attribute."' => \$".$attribute.",\n";
+            }
+            $codeActionController .= "\t\t\t));
+            //add it to db
+            \$".$componentName."Manager->add(\$".$componentName.");
+            \$actionMessage = \"Opération Valide : ".ucfirst($componentName)." Ajouté(e) avec succès.\";  
+            \$typeMessage = \"success\";
+        }
+        else{
+            \$actionMessage = \"Erreur Ajout ".$componentName." : Vous devez remplir le champ '".$attributes[0]."'.\";
+            \$typeMessage = \"error\";
+        }
+    }
+    //Action Add Processing End
+    //Action Update Processing Begin
+    else if(\$action == \"update\"){
+        \$id".ucfirst($componentName)." = htmlentities(\$_POST['id".ucfirst($componentName)."']);
+        if(!empty(\$_POST['nom'])){
+            \$".$componentName." = new ".ucfirst($componentName)."(array(\n";
+            $codeActionController .= "\t\t\t\t'id' => \$id".ucfirst($componentName).",\n";
+            foreach($attributes as $attribute){
+                $codeActionController .= "\t\t\t\t'".$attribute."' => \$".$attribute.",\n";
+            } 
+            $codeActionController .= "\t\t\t));
+            \$".$componentName."Manager->update(\$".$componentName.");
+            \$actionMessage = \"Opération Valide : ".ucfirst($componentName)." Modifié(e) avec succès.\";
+            \$typeMessage = \"success\";
+        }
+        else{
+            \$actionMessage = \"Erreur Modification ".ucfirst($componentName)." : Vous devez remplir le champ '".$attributes[0]."'.\";
+            \$typeMessage = \"error\";
+        }
+    }
+    //Action Update Processing End
+    //Action Delete Processing Begin
+    else if(\$action == \"delete\"){
+        \$id".ucfirst($componentName)." = htmlentities(\$_POST['id".ucfirst($componentName)."']);
+        \$".$componentName."Manager->delete(\$id".ucfirst($componentName).");
+        \$actionMessage = \"Opération Valide : ".ucfirst($componentName)." supprimée avec succès.\";
+        \$typeMessage = \"success\";
+    }
+    //Action Delete Processing End
+    \$_SESSION['".$componentName."-action-message'] = \$actionMessage;
+    \$_SESSION['".$componentName."-type-message'] = \$typeMessage;
+    header('Location:../file-name-please.php');\n\n";
+    
+    //process complete
+    $ressourceActionController = fopen($componentActionControllerLocation, "w");
+    fwrite($ressourceActionController, $codeActionController);
+    fclose($ressourceActionController);
+    
+    //process end
 	$_SESSION['generator-success'] = "Components creation complete.";
 	header("Location:../index.php");	
 }

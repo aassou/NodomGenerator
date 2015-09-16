@@ -62,7 +62,7 @@ session_start();
 				    </div>
 				    <div class="large-4 medium-4 columns">
 				      <label>Project Path</label>
-				      <input type="text" name="componentLocation" placeholder="c:\wamp\www\example..." value="c:/wamp/www/gelm/" />
+				      <input type="text" name="componentLocation" placeholder="c:\wamp\www\example..." value="c:/wamp/www/" />
 				    </div>
 				    <div class="large-4 medium-4 columns">
 				      <label>Attributes Number</label>
