@@ -287,7 +287,7 @@ if(isset($_POST['attributes']) and !empty($_POST['attributes'])){
     //Action Update Processing Begin
     else if(\$action == \"update\"){
         \$id".ucfirst($componentName)." = htmlentities(\$_POST['id".ucfirst($componentName)."']);
-        if(!empty(\$_POST['nom'])){
+        if(!empty(\$_POST['".$attributes[0]."'])){
             \$".$componentName." = new ".ucfirst($componentName)."(array(\n";
             $codeActionController .= "\t\t\t\t'id' => \$id".ucfirst($componentName).",\n";
             foreach($attributes as $attribute){
