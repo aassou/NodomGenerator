@@ -12,17 +12,22 @@ if(!empty($_POST['componentName']) and !empty($_POST['componentLocation'])){
 	$componentModelManager = ucfirst($componentName)."Manager.php";
 	$componentSql = "t_".$componentName.".sql";
     $componentActionController = ucfirst($componentName)."ActionController.php";
+    $componentView = $componentName.".php";
+    $componentPrint = ucfirst($componentName)."Print.php";
 	
 	//create files
 	$componentModelFile = fopen($componentLocation."/model/".$componentModel, "w");
 	$componentModelManagerFile = fopen($componentLocation."/model/".$componentModelManager, "w");
 	$componentSqlFile = fopen($componentLocation."/db/".$componentSql, "w");
 	$componentActionControllerFile = fopen($componentLocation."/controller/".$componentActionController, "w");
+    $componentViewFile = fopen($componentLocation."/view/".$componentView, "w");
+    $componentPrintFile = fopen($componentLocation."/print/".$componentPrint, "w");
 	//close files
 	fclose($componentModelFile);
 	fclose($componentModelManagerFile);
 	fclose($componentSqlFile);
     fclose($componentActionControllerFile);
+    fclose($componentViewFile);
 	//message
 	$_SESSION['generator-success'] = "Components created succefully.";
 	$_SESSION['attributesNumber'] = $attributesNumber;

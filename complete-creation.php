@@ -51,7 +51,7 @@ session_start();
             		unset($_SESSION['generator-success']);
             	}
             	?>
-              	<form method="post" action="controller/GeneratorCompleteController.php">
+              	<form method="post" action="controller/GeneratorCompleteControllerMVC.php">
 				  <!--div class="row"-->
 				  	<?php
 				  	$attributesNumber = $_SESSION['attributesNumber'];
@@ -61,7 +61,7 @@ session_start();
 				      <label>Attribute Name</label>
 				      <input type="text" name="attributes[]" placeholder="" />
 				    </div>
-				    <div class="large-6 columns">
+				    <div class="large-4 columns">
 				      <label>Attribute Type</label>
 				      <select name="attributesTypes[]">
 				      	<option value="INT(12)">INT</option>
@@ -72,6 +72,7 @@ session_start();
 				        <option value="TEXT">TEXT</option>
 				        <option value="DATE">DATE</option>
 				        <option value="DATE TIME">DATE TIME</option>
+				        <option value="TIME">TIME</option>
 				      </select>
 				    </div>
 				  <!--/div-->

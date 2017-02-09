@@ -44,6 +44,8 @@ if(isset($_POST['attributes']) and !empty($_POST['attributes'])){
 	}
     $codeModel .= "\tprivate \$_created;\n";
 	$codeModel .= "\tprivate \$_createdBy;\n";
+    $codeModel .= "\tprivate \$_updated;\n";
+    $codeModel .= "\tprivate \$_updatedBy;\n";
     
 	//create constructor and hydrate method
 	$codeModel .= "\n\t//le constructeur
@@ -77,6 +79,12 @@ if(isset($_POST['attributes']) and !empty($_POST['attributes'])){
 	$codeModel .= "\tpublic function setCreatedBy(\$createdBy){
         \$this->_createdBy = \$createdBy;
     }\n\n";
+    $codeModel .= "\tpublic function setUpdated(\$updated){
+        \$this->_updated = \$updated;
+    }\n\n";
+    $codeModel .= "\tpublic function setUpdatedBy(\$updatedBy){
+        \$this->_updatedBy = \$updatedBy;
+    }\n\n";
     
 	//create getters
 	$codeModel .= "\t//getters\n";
@@ -93,6 +101,12 @@ if(isset($_POST['attributes']) and !empty($_POST['attributes'])){
     }\n\n";
     $codeModel .= "\tpublic function createdBy(){
         return \$this->_createdBy;
+    }\n\n";
+    $codeModel .= "\tpublic function updated(){
+        return \$this->_updated;
+    }\n\n";
+    $codeModel .= "\tpublic function updatedBy(){
+        return \$this->_updatedBy;
     }\n\n";
 	//end of class
 	$codeModel .= "}";
@@ -136,8 +150,8 @@ if(isset($_POST['attributes']) and !empty($_POST['attributes'])){
 	foreach($attributes as $attribute){
 		$codeModelManager .= "\t\t\$query->bindValue(':".$attribute."', \$".$componentName."->".$attribute."());\n";	
 	}
-    $codeModelManager .= "\t\t\$query->bindValue(':created', ".$componentName."created());\n";
-    $codeModelManager .= "\t\t\$query->bindValue(':createdBy', ".$componentName."createdBy());\n";
+    $codeModelManager .= "\t\t\$query->bindValue(':created', \$".$componentName."->created());\n";
+    $codeModelManager .= "\t\t\$query->bindValue(':createdBy', \$".$componentName."->createdBy());\n";
 	$codeModelManager .= "\t\t\$query->execute();\n\t\t\$query->closeCursor();\n\t}\n\n";
 	/**
 	 * create update method
@@ -150,12 +164,15 @@ if(isset($_POST['attributes']) and !empty($_POST['attributes'])){
 		$attributes2[$i] .= "=:".$attributes[$i]; 
 	}
 	$codeModelManager .= implode(", ", $attributes2);
+	$codeModelManager .= ", updated=:updated, updatedBy=:updatedBy";
 	$codeModelManager .= "\n\t\tWHERE id=:id";
 	$codeModelManager .= "')\n\t\tor die (print_r(\$this->_db->errorInfo()));\n";
 	$codeModelManager .= "\t\t\$query->bindValue(':id', \$".$componentName."->id());\n";
 	foreach($attributes as $attribute){
 		$codeModelManager .= "\t\t\$query->bindValue(':".$attribute."', \$".$componentName."->".$attribute."());\n";	
 	}
+	$codeModelManager .= "\t\t\$query->bindValue(':updated', \$".$componentName."->updated());\n";
+    $codeModelManager .= "\t\t\$query->bindValue(':updatedBy', \$".$componentName."->updatedBy());\n";
 	$codeModelManager .= "\t\t\$query->execute();\n\t\t\$query->closeCursor();\n\t}\n\n";
 	/**
 	 * create delete method
@@ -226,6 +243,8 @@ if(isset($_POST['attributes']) and !empty($_POST['attributes'])){
 	}
     $codeSql .= "\tcreated DATETIME DEFAULT NULL,\n";
     $codeSql .= "\tcreatedBy VARCHAR(50) DEFAULT NULL,\n";
+    $codeSql .= "\tupdated DATETIME DEFAULT NULL,\n";
+    $codeSql .= "\tupdatedBy VARCHAR(50) DEFAULT NULL,\n";
 	$codeSql .= "\tPRIMARY KEY (id)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 	//process complete
 	$ressourceSql = fopen($componentSqlLocation, "w");
@@ -256,7 +275,9 @@ if(isset($_POST['attributes']) and !empty($_POST['attributes'])){
     \$action = htmlentities(\$_POST['action']);
     //This var contains result message of CRUD action
     \$actionMessage = \"\";
-    \$typeMessage = \"\";\n";
+    \$typeMessage = \"\";\n
+    //Component Class Manager\n
+    \$".$componentName."Manager = new ".ucfirst($componentName)."Manager(\$pdo);\n";
     
     $codeActionController .=
     "\t//Action Add Processing Begin
@@ -272,6 +293,8 @@ if(isset($_POST['attributes']) and !empty($_POST['attributes'])){
             foreach($attributes as $attribute){
                 $codeActionController .= "\t\t\t\t'".$attribute."' => \$".$attribute.",\n";
             }
+            $codeActionController .= "\t\t\t\t'created' => \$created,
+            \t'createdBy' => \$createdBy\n";
             $codeActionController .= "\t\t\t));
             //add it to db
             \$".$componentName."Manager->add(\$".$componentName.");
@@ -287,12 +310,19 @@ if(isset($_POST['attributes']) and !empty($_POST['attributes'])){
     //Action Update Processing Begin
     else if(\$action == \"update\"){
         \$id".ucfirst($componentName)." = htmlentities(\$_POST['id".ucfirst($componentName)."']);
-        if(!empty(\$_POST['".$attributes[0]."'])){
-            \$".$componentName." = new ".ucfirst($componentName)."(array(\n";
+        if(!empty(\$_POST['".$attributes[0]."'])){\n";
+            foreach($attributes as $attribute){
+                $codeActionController .= "\t\t\t\$".$attribute." = htmlentities(\$_POST['".$attribute."']);\n";
+            }
+            $codeActionController .= "\t\t\t\$updatedBy = \$_SESSION['userMerlaTrav']->login();
+            \$updated = date('Y-m-d h:i:s');
+            \t\t\t\$".$componentName." = new ".ucfirst($componentName)."(array(\n";
             $codeActionController .= "\t\t\t\t'id' => \$id".ucfirst($componentName).",\n";
             foreach($attributes as $attribute){
                 $codeActionController .= "\t\t\t\t'".$attribute."' => \$".$attribute.",\n";
             } 
+            $codeActionController .= "\t\t\t\t'updated' => \$updated,
+            \t'updatedBy' => \$updatedBy\n";
             $codeActionController .= "\t\t\t));
             \$".$componentName."Manager->update(\$".$componentName.");
             \$actionMessage = \"Opération Valide : ".ucfirst($componentName)." Modifié(e) avec succès.\";
@@ -308,7 +338,7 @@ if(isset($_POST['attributes']) and !empty($_POST['attributes'])){
     else if(\$action == \"delete\"){
         \$id".ucfirst($componentName)." = htmlentities(\$_POST['id".ucfirst($componentName)."']);
         \$".$componentName."Manager->delete(\$id".ucfirst($componentName).");
-        \$actionMessage = \"Opération Valide : ".ucfirst($componentName)." supprimée avec succès.\";
+        \$actionMessage = \"Opération Valide : ".ucfirst($componentName)." supprimé(e) avec succès.\";
         \$typeMessage = \"success\";
     }
     //Action Delete Processing End
