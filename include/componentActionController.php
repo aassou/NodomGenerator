@@ -44,7 +44,7 @@
             \t'createdBy' => \$createdBy\n";
             $codeActionController .= "\t\t\t));
             //add it to db
-            \$".$componentName."Manager->add(\$".$componentName.");
+            \$this->_".$componentName."Manager->add(\$".$componentName.");
             \$this->_actionMessage = \"Opération Valide : ".ucfirst($componentName)." Ajouté(e) avec succès.\";  
             \$this->_typeMessage = \"success\";
             \$this->_source = \"$componentName\";
@@ -72,7 +72,7 @@
             $codeActionController .= "\t\t\t\t'updated' => \$updated,
             \t'updatedBy' => \$updatedBy\n";
             $codeActionController .= "\t\t\t));
-            \$".$componentName."Manager->update(\$".$componentName.");
+            \$this->_".$componentName."Manager->update(\$".$componentName.");
             \$this->_actionMessage = \"Opération Valide : ".ucfirst($componentName)." Modifié(e) avec succès.\";
             \$this->_typeMessage = \"success\";
             \$this->_source = \"$componentName\";
@@ -86,7 +86,7 @@
     \n
     public function delete(\$$componentName){
         \$id".ucfirst($componentName)." = htmlentities(\$".$componentName."['id".ucfirst($componentName)."']);
-        \$".$componentName."Manager->delete(\$id".ucfirst($componentName).");
+        \$this->_".$componentName."Manager->delete(\$id".ucfirst($componentName).");
         \$this->_actionMessage = \"Opération Valide : ".ucfirst($componentName)." supprimé(e) avec succès.\";
         \$this->_typeMessage = \"success\";
         \$this->_source = \"$componentName\";

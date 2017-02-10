@@ -18,7 +18,7 @@ session_start();
       </div>
     </div>
     
-    <div class="row">
+    <!--div class="row">
       <div class="large-12 columns">
       	<div class="panel">
 	        <h3>Welcome to Nodom Generator! </h3>
@@ -37,7 +37,7 @@ session_start();
 					</div>
       	</div>
       </div>
-    </div>
+    </div-->
 
     <div class="row">
       <div class="large-8 medium-8 columns">

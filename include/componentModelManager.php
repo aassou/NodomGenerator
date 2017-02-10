@@ -82,7 +82,7 @@
     $codeModelManager .= "\tpublic function get".ucfirst($componentName)."s(){
         \$".$componentName."s = array();\n";
     $codeModelManager .= "\t\t\$query = \$this->_db->query('SELECT * FROM t_".$componentName."
-        ORDER BY id DESC');\n";
+        ORDER BY id ASC');\n";
     $codeModelManager .= "\t\twhile(\$data = \$query->fetch(PDO::FETCH_ASSOC)){\n";
     $codeModelManager .= "\t\t\t\$".$componentName."s[] = new ".ucfirst($componentName)."(\$data);\n";
     $codeModelManager .= "\t\t}\n\t\t\$query->closeCursor();\n\t\treturn \$".$componentName."s;\n\t}\n\n";

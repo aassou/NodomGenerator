@@ -23,10 +23,10 @@ session_start();
       	<div class="panel">
 	        <h3>Welcome to Nodom Generator! </h3>
 	        <p>Here you can create your project just on taping your "component" name.</p>
-	        <p>This will generate 3 files : </p>
+	        <p>This will generate 6 files : </p>
 	        <div class="row">
 	        	<div class="large-4 medium-4 columns">
-	    			<p><a>Component.php</a><br />This file contains our your component Model including attributes, setters and getters.</p>
+	    			<p><a>Component.php</a><br />This file contains your component Model including attributes, setters and getters.</p>
 	    		</div>
 	        	<div class="large-4 medium-4 columns">
 	        		<p><a>ComponentManager.php</a><br />In this file you'll find the baisc CRUD methods.</p>
@@ -35,6 +35,17 @@ session_start();
 	        		<p><a>t_component.sql</a><br />Your table and its structure it's stored in this file.</p>
 	        	</div>        
 			</div>
+			<div class="row">
+                <div class="large-4 medium-4 columns">
+                    <p><a>ComponentActionController.php</a><br />This file is the bridge between your Views and your business.</p>
+                </div>
+                <div class="large-4 medium-4 columns">
+                    <p><a>ComponentView.php</a><br />In this file we create the minimum structure of a view.</p>
+                </div>
+                <div class="large-4 medium-4 columns">
+                    <p><a>ComponentPrint.php</a><br />This file is used for reporting and PDF files generation.</p>
+                </div>        
+            </div>
       	</div>
       </div>
     </div>
@@ -62,7 +73,7 @@ session_start();
 				    </div>
 				    <div class="large-4 medium-4 columns">
 				      <label>Project Path</label>
-				      <input type="text" name="componentLocation" placeholder="c:\wamp\www\example..." value="c:/wamp/www/" />
+				      <input type="text" name="componentLocation" placeholder="c:\wamp\www\example..." value="c:/wamp/www/AxaAmazigh" />
 				    </div>
 				    <div class="large-4 medium-4 columns">
 				      <label>Attributes Number</label>
