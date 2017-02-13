@@ -3,8 +3,6 @@
 $codeView = 
 "<?php
 require('../app/classLoad.php');
-spl_autoload_register(\"classLoad\"); 
-require('../app/PDOFactory.php');
 session_start();
 if ( isset(\$_SESSION['$sessionName']) ) {
     \$".$componentName."Manager = new ".ucfirst($componentName)."Manager(PDOFactory::getMysqlConnection());
@@ -88,10 +86,10 @@ if ( isset(\$_SESSION['$sessionName']) ) {
                                     <table class=\"table table-striped table-bordered table-hover\" id=\"sample_2\">
                                         <thead>
                                             <tr>
-                                                <th class=\"hidden-phone\" style=\"width: 10%\">Actions</th>";
+                                                <th class=\"hidden-phone t10\">Actions</th>";
                                                 foreach ( $attributes as $attribute ) {
                                                 $codeView .= "
-                                                <th style=\"width: 10%\">".ucfirst($attribute)."</th>";
+                                                <th class=\"t10\">".ucfirst($attribute)."</th>";
                                                 }
                                                 $codeView .="
                                             </tr>
