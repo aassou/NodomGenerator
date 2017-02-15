@@ -97,6 +97,15 @@
     $codeModelManager .= "\t\t\t\$".$componentName."s[] = new ".ucfirst($componentName)."(\$data);\n";
     $codeModelManager .= "\t\t}\n\t\t\$query->closeCursor();\n\t\treturn \$".$componentName."s;\n\t}\n\n";
     /**
+     * create getComponentsNumber method
+     */
+    $codeModelManager .= "\tpublic function get".ucfirst($componentName)."sNumber(){
+        \$query = \$this->_db->query('SELECT COUNT(*) AS ".$componentName."sNumber FROM t_".$componentName."');
+        \$data = \$query->fetch(PDO::FETCH_ASSOC);
+        \$".$componentName." = \$data['".$componentName."sNumber'];
+        return \$".$componentName.";
+    }\n\n";
+    /**
      * create getLastID method
      */
     $codeModelManager .= "\tpublic function getLastId(){

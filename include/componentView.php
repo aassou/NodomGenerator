@@ -7,6 +7,21 @@ session_start();
 if ( isset(\$_SESSION['$sessionName']) ) {
     \$".$componentName."Manager = new ".ucfirst($componentName)."Manager(PDOFactory::getMysqlConnection());
     \$".$componentName."s = \$".$componentName."Manager->get".ucfirst($componentName)."s(); 
+    \$".$componentName."Number = \$".$componentName."Manager->get".ucfirst($componentName)."Number(); 
+    /*\$p = 1;
+    if(\$".$componentName."Number!=0){
+        \$".$componentName."PerPage = 20;
+        \$pageNumber = ceil(\$".$componentName."Number/\$".$componentName."PerPage);
+        if(isset(\$_GET['p']) and (\$_GET['p']>0 and \$_GET['p']<=\$pageNumber)){
+            \$p = \$_GET['p'];
+        }
+        else{
+            \$p = 1;
+        }
+        \$begin = (\$p - 1) * \$".$componentName."PerPage;
+        \$pagination = paginate('".$componentName.".php', '?p=', \$pageNumber, \$p);
+        \$".$componentName."s = \$".$componentName."Manager->get".ucfirst($componentName)."sByLimits(\$begin, \$".$componentName."PerPage);
+    }*/ 
 ?>
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang=\"en\" class=\"ie8\"> <![endif]-->
@@ -95,7 +110,10 @@ if ( isset(\$_SESSION['$sessionName']) ) {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php foreach ( \$".$componentName."s as \$".$componentName." ) { ?>
+                                            <?php
+                                            //if ( \$".$componentName."Number != 0 ) { 
+                                            foreach ( \$".$componentName."s as \$".$componentName." ) {
+                                            ?>
                                             <tr>
                                                 <td class=\"hidden-phone\">
                                                     <a href=\"#delete".ucfirst($componentName)."<?= \$".$componentName."->id() ?>\" data-toggle=\"modal\" data-id=\"<?= \$".$componentName."->id() ?>\" class=\"btn mini red\"><i class=\"icon-remove\"></i></a>
@@ -164,9 +182,13 @@ if ( isset(\$_SESSION['$sessionName']) ) {
                                                 </form>
                                             </div>
                                             <!-- deleteClasse box end --> 
-                                            <?php } ?>
+                                            <?php 
+                                            }//end foreach 
+                                            //}//end if
+                                            ?>
                                         </tbody>
                                     </table>
+                                    <?php /*if(\$".$componentName."Number != 0){ echo \$pagination; }*/ ?><br>
                                 </div>
                             </div>
                         </div>

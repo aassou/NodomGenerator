@@ -47,12 +47,12 @@
             \$this->_".$componentName."Manager->add(\$".$componentName.");
             \$this->_actionMessage = \"Opération Valide : ".ucfirst($componentName)." Ajouté(e) avec succès.\";  
             \$this->_typeMessage = \"success\";
-            \$this->_source = \"$componentName\";
+            \$this->_source = \"view/$componentName\";
         }
         else{
             \$this->_actionMessage = \"Opération Invalide : Vous devez remplir le champ '".$attributes[0]."'.\";
             \$this->_typeMessage = \"error\";
-            \$this->_source = \"$componentName\";
+            \$this->_source = \"view/$componentName\";
         }
     }
     \n
@@ -75,12 +75,12 @@
             \$this->_".$componentName."Manager->update(\$".$componentName.");
             \$this->_actionMessage = \"Opération Valide : ".ucfirst($componentName)." Modifié(e) avec succès.\";
             \$this->_typeMessage = \"success\";
-            \$this->_source = \"$componentName\";
+            \$this->_source = \"view/$componentName\";
         }
         else{
             \$this->_actionMessage = \"Opération Invalide : Vous devez remplir le champ '".$attributes[0]."'.\";
             \$this->_typeMessage = \"error\";
-            \$this->_source = \"$componentName\";
+            \$this->_source = \"view/$componentName\";
         }
     }
     \n
@@ -89,7 +89,7 @@
         \$this->_".$componentName."Manager->delete(\$id".ucfirst($componentName).");
         \$this->_actionMessage = \"Opération Valide : ".ucfirst($componentName)." supprimé(e) avec succès.\";
         \$this->_typeMessage = \"success\";
-        \$this->_source = \"$componentName\";
+        \$this->_source = \"view/$componentName\";
     }
     \n}";
     
