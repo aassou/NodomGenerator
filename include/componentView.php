@@ -7,11 +7,11 @@ session_start();
 if ( isset(\$_SESSION['$sessionName']) ) {
     \$".$componentName."Manager = new ".ucfirst($componentName)."Manager(PDOFactory::getMysqlConnection());
     \$".$componentName."s = \$".$componentName."Manager->get".ucfirst($componentName)."s(); 
-    \$".$componentName."Number = \$".$componentName."Manager->get".ucfirst($componentName)."Number(); 
-    /*\$p = 1;
-    if(\$".$componentName."Number!=0){
+    /*\$".$componentName."sNumber = \$".$componentName."Manager->get".ucfirst($componentName)."sNumber(); 
+    \$p = 1;
+    if ( \$".$componentName."sNumber != 0 ) {
         \$".$componentName."PerPage = 20;
-        \$pageNumber = ceil(\$".$componentName."Number/\$".$componentName."PerPage);
+        \$pageNumber = ceil(\$".$componentName."sNumber/\$".$componentName."PerPage);
         if(isset(\$_GET['p']) and (\$_GET['p']>0 and \$_GET['p']<=\$pageNumber)){
             \$p = \$_GET['p'];
         }
@@ -101,7 +101,7 @@ if ( isset(\$_SESSION['$sessionName']) ) {
                                     <table class=\"table table-striped table-bordered table-hover\" id=\"sample_2\">
                                         <thead>
                                             <tr>
-                                                <th class=\"hidden-phone t10\">Actions</th>";
+                                                <th class=\"t10 hidden-phone\">Actions</th>";
                                                 foreach ( $attributes as $attribute ) {
                                                 $codeView .= "
                                                 <th class=\"t10\">".ucfirst($attribute)."</th>";
@@ -111,7 +111,7 @@ if ( isset(\$_SESSION['$sessionName']) ) {
                                         </thead>
                                         <tbody>
                                             <?php
-                                            //if ( \$".$componentName."Number != 0 ) { 
+                                            //if ( \$".$componentName."sNumber != 0 ) { 
                                             foreach ( \$".$componentName."s as \$".$componentName." ) {
                                             ?>
                                             <tr>
@@ -188,7 +188,7 @@ if ( isset(\$_SESSION['$sessionName']) ) {
                                             ?>
                                         </tbody>
                                     </table>
-                                    <?php /*if(\$".$componentName."Number != 0){ echo \$pagination; }*/ ?><br>
+                                    <?php /*if(\$".$componentName."sNumber != 0){ echo \$pagination; }*/ ?><br>
                                 </div>
                             </div>
                         </div>
