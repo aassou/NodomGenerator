@@ -5,7 +5,9 @@ $codeView =
 require('../app/classLoad.php');
 session_start();
 if ( isset(\$_SESSION['$sessionName']) ) {
+    //get Managers
     \$".$componentName."Manager = new ".ucfirst($componentName)."Manager(PDOFactory::getMysqlConnection());
+    //get objects
     \$".$componentName."s = \$".$componentName."Manager->get".ucfirst($componentName)."s(); 
     /*\$".$componentName."sNumber = \$".$componentName."Manager->get".ucfirst($componentName)."sNumber(); 
     \$p = 1;
