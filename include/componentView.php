@@ -159,7 +159,7 @@ if ( isset(\$_SESSION['$sessionName']) ) {
                                                     </div>
                                                 </form>
                                             </div>
-                                            <!-- updateClasse box end --> 
+                                            <!-- update".ucfirst($componentName)." box end --> 
                                             <!-- delete".ucfirst($componentName)." box begin -->
                                             <div id=\"delete".ucfirst($componentName)."<?= \$".$componentName."->id() ?>\" class=\"modal modal-big hide fade in\" tabindex=\"-1\" role=\"dialog\" aria-hidden=\"false\">
                                                 <div class=\"modal-header\">
@@ -183,7 +183,7 @@ if ( isset(\$_SESSION['$sessionName']) ) {
                                                     </div>
                                                 </form>
                                             </div>
-                                            <!-- deleteClasse box end --> 
+                                            <!-- delete".ucfirst($componentName)." box end --> 
                                             <?php 
                                             }//end foreach 
                                             //}//end if
