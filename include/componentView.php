@@ -5,11 +5,11 @@ $codeView =
 require('../app/classLoad.php');
 session_start();
 if ( isset(\$_SESSION['$sessionName']) ) {
-    //get Managers
-    \$".$componentName."Manager = new ".ucfirst($componentName)."Manager(PDOFactory::getMysqlConnection());
+    //create Controller
+    \$".$componentName."ActionController = new ".ucfirst($componentName)."ActionController('".$componentName."');
     //get objects
-    \$".$componentName."s = \$".$componentName."Manager->get".ucfirst($componentName)."s(); 
-    /*\$".$componentName."sNumber = \$".$componentName."Manager->get".ucfirst($componentName)."sNumber(); 
+    \$".$componentName."s = \$".$componentName."ActionController->get".ucfirst($componentName)."s(); 
+    /*\$".$componentName."sNumber = \$".$componentName."ActionController->get".ucfirst($componentName)."sNumber(); 
     \$p = 1;
     if ( \$".$componentName."sNumber != 0 ) {
         \$".$componentName."PerPage = 20;
@@ -22,7 +22,7 @@ if ( isset(\$_SESSION['$sessionName']) ) {
         }
         \$begin = (\$p - 1) * \$".$componentName."PerPage;
         \$pagination = paginate('".$componentName.".php', '?p=', \$pageNumber, \$p);
-        \$".$componentName."s = \$".$componentName."Manager->get".ucfirst($componentName)."sByLimits(\$begin, \$".$componentName."PerPage);
+        \$".$componentName."s = \$".$componentName."ActionController->get".ucfirst($componentName)."sByLimits(\$begin, \$".$componentName."PerPage);
     }*/ 
 ?>
 <!DOCTYPE html>

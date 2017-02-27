@@ -29,7 +29,7 @@
     
     //actions
     public function add(\$$componentName){
-        if( !empty(\$_POST['".$attributes[0]."']) ){\n";
+        if( !empty(\$".$componentName."['".$attributes[0]."']) ){\n";
             foreach($attributes as $attribute){
                 $codeActionController .= "\t\t\t\$".$attribute." = htmlentities(\$".$componentName."['".$attribute."']);\n";
             }
@@ -57,8 +57,8 @@
     }
     \n
     public function update(\$$componentName){
-        \$id".ucfirst($componentName)." = htmlentities(\$_POST['id".ucfirst($componentName)."']);
         if(!empty(\$".$componentName."['".$attributes[0]."'])){\n";
+            \$id".ucfirst($componentName)." = htmlentities(\$".$componentName."['id".ucfirst($componentName)."']);
             foreach($attributes as $attribute){
                 $codeActionController .= "\t\t\t\$".$attribute." = htmlentities(\$".$componentName."['".$attribute."']);\n";
             }
@@ -91,7 +91,28 @@
         \$this->_typeMessage = \"success\";
         \$this->_source = \"view/$componentName\";
     }
-    \n}";
+    \n
+    public function get".ucfirst($componentName)."ById(\$id){
+        return \$this->_".$componentName."Manager->get".ucfirst($componentName)."ById(\$id);
+    }
+    \n
+    public function get".ucfirst($componentName)."s(){
+        return  \$this->_".$componentName."Manager->get".ucfirst($componentName)."s();
+    }
+    \n
+    public function get".ucfirst($componentName)."sByLimits(\$begin, \$end){
+        return \$this->_".$componentName."Manager->get".ucfirst($componentName)."sByLimits(\$begin, \$end);
+    }
+    \n
+    public function get".ucfirst($componentName)."sNumber(){
+        return \$this->_".$componentName."Manager->get".ucfirst($componentName)."sNumber();
+    }
+    \n
+    public function getLastId(){
+        return \$this->_".$componentName."Manager->getLastId();
+    }
+    \n}
+    ";
     
     //process complete
     $ressourceActionController = fopen($componentActionControllerLocation, "w");
