@@ -67,7 +67,7 @@
     /**
      * create getComponentByID method
      */
-    $codeModelManager .= "\tpublic function get".ucfirst($componentName)."ById(\$id){
+    $codeModelManager .= "\tpublic function getOneById(\$id){
         \$query = \$this->_db->prepare(' SELECT * FROM t_".$componentName;
     $codeModelManager .= "\n\t\tWHERE id=:id";
     $codeModelManager .= "')\n\t\tor die (print_r(\$this->_db->errorInfo()));\n";
@@ -79,7 +79,7 @@
     /**
      * create getComponents method
      */
-    $codeModelManager .= "\tpublic function get".ucfirst($componentName)."s(){
+    $codeModelManager .= "\tpublic function getAll(){
         \$".$componentName."s = array();\n";
     $codeModelManager .= "\t\t\$query = \$this->_db->query('SELECT * FROM t_".$componentName."
         ORDER BY id ASC');\n";
@@ -89,7 +89,7 @@
     /**
      * create getComponentsByLimits method
      */
-    $codeModelManager .= "\tpublic function get".ucfirst($componentName)."sByLimits(\$begin, \$end){
+    $codeModelManager .= "\tpublic function getAllByLimits(\$begin, \$end){
         \$".$componentName."s = array();\n";
     $codeModelManager .= "\t\t\$query = \$this->_db->query('SELECT * FROM t_".$componentName."
         ORDER BY id DESC LIMIT '.\$begin.', '.\$end);\n";
@@ -99,7 +99,7 @@
     /**
      * create getComponentsNumber method
      */
-    $codeModelManager .= "\tpublic function get".ucfirst($componentName)."sNumber(){
+    $codeModelManager .= "\tpublic function getAllNumber(){
         \$query = \$this->_db->query('SELECT COUNT(*) AS ".$componentName."sNumber FROM t_".$componentName."');
         \$data = \$query->fetch(PDO::FETCH_ASSOC);
         \$".$componentName." = \$data['".$componentName."sNumber'];

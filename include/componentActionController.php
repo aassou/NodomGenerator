@@ -58,7 +58,7 @@
     \n
     public function update(\$$componentName){
         if(!empty(\$".$componentName."['".$attributes[0]."'])){\n";
-            \$id".ucfirst($componentName)." = htmlentities(\$".$componentName."['id".ucfirst($componentName)."']);
+            "\$id".ucfirst($componentName)." = htmlentities(\$".$componentName."['id".ucfirst($componentName)."'])";
             foreach($attributes as $attribute){
                 $codeActionController .= "\t\t\t\$".$attribute." = htmlentities(\$".$componentName."['".$attribute."']);\n";
             }

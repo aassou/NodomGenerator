@@ -65,7 +65,9 @@ session_start();
 				      <label>Attribute Type</label>
 				      <select name="attributesTypes[]">
 				      	<option value="INT(12)">INT</option>
-				        <option value="DECIMAL(12,2)">DECIMAL</option>
+				        <option value="DECIMAL(12,2)">DECIMAL 12,2</option>
+				        <option value="DECIMAL(12,3)">DECIMAL 12,3</option>
+				        <option value="VARCHAR(10)">VARCHAR(10)</option>
 				        <option value="VARCHAR(50)">VARCHAR(50)</option>
 				        <option value="VARCHAR(100)">VARCHAR(100)</option>
 				        <option value="VARCHAR(255)">VARCHAR(255)</option>
