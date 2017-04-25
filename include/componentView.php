@@ -6,10 +6,10 @@ require('../app/classLoad.php');
 session_start();
 if ( isset(\$_SESSION['$sessionName']) ) {
     //create Controller
-    \$".$componentName."ActionController = new ".ucfirst($componentName)."ActionController('".$componentName."');
+    \$".$componentName."ActionController = new AppController('".$componentName."');
     //get objects
-    \$".$componentName."s = \$".$componentName."ActionController->get".ucfirst($componentName)."s(); 
-    /*\$".$componentName."sNumber = \$".$componentName."ActionController->get".ucfirst($componentName)."sNumber(); 
+    \$".$componentName."s = \$".$componentName."ActionController->getAll(); 
+    /*\$".$componentName."sNumber = \$".$componentName."ActionController->getAllNumber(); 
     \$p = 1;
     if ( \$".$componentName."sNumber != 0 ) {
         \$".$componentName."PerPage = 20;
@@ -22,7 +22,7 @@ if ( isset(\$_SESSION['$sessionName']) ) {
         }
         \$begin = (\$p - 1) * \$".$componentName."PerPage;
         \$pagination = paginate('".$componentName.".php', '?p=', \$pageNumber, \$p);
-        \$".$componentName."s = \$".$componentName."ActionController->get".ucfirst($componentName)."sByLimits(\$begin, \$".$componentName."PerPage);
+        \$".$componentName."s = \$".$componentName."ActionController->getAllByLimits(\$begin, \$".$componentName."PerPage);
     }*/ 
 ?>
 <!DOCTYPE html>
