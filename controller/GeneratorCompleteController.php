@@ -34,7 +34,8 @@ if(isset($_POST['attributes']) and !empty($_POST['attributes'])){
 	//complete processing
 	
 	//create class name
-	$codeModel = "<?php\nclass ".ucfirst($componentName)."{\n\n";
+    $componentNameUpperCase = ucfirst($componentName);
+	$codeModel = "<?php\nclass ".$componentNameUpperCase."{\n\n";
 	
 	//create attributes
 	$codeModel .= "\t//attributes\n";
@@ -48,12 +49,19 @@ if(isset($_POST['attributes']) and !empty($_POST['attributes'])){
     $codeModel .= "\tprivate \$_updatedBy;\n";
     
 	//create constructor and hydrate method
-	$codeModel .= "\n\t//le constructeur
+	$codeModel .= "\n\t
+    /**
+     * $componentNameUpperCase constructor.
+     * @param \$data
+     */
     public function __construct(\$data){
         \$this->hydrate(\$data);
     }
     
-    //la focntion hydrate sert à attribuer les valeurs en utilisant les setters d\'une façon dynamique!
+    
+    /**
+     * @param \$data
+     */
     public function hydrate(\$data){
         foreach (\$data as \$key => \$value){
             \$method = 'set'.ucfirst(\$key);
@@ -62,50 +70,48 @@ if(isset($_POST['attributes']) and !empty($_POST['attributes'])){
                 \$this->\$method(\$value);
             }
         }
-    }\n\n\t//setters\n";
-	
-	//create setters
-	$codeModel .= "\tpublic function setId(\$id){
+    }\n\n\n";
+
+	$codeModel .= "\tpublic function setId(\$id) {
     	\$this->_id = \$id;
     }\n";
-	foreach($attributes as $attribute){
-		$codeModel .= "\tpublic function set".ucfirst($attribute)."(\$".$attribute."){
+	foreach ($attributes as $attribute) {
+		$codeModel .= "\tpublic function set".ucfirst($attribute)."(\$".$attribute.") {
 		\$this->_".$attribute." = \$".$attribute.";
    	}\n\n";
 	}
-    $codeModel .= "\tpublic function setCreated(\$created){
+    $codeModel .= "\tpublic function setCreated(\$created) {
         \$this->_created = \$created;
     }\n\n";
-	$codeModel .= "\tpublic function setCreatedBy(\$createdBy){
+	$codeModel .= "\tpublic function setCreatedBy(\$createdBy) {
         \$this->_createdBy = \$createdBy;
     }\n\n";
-    $codeModel .= "\tpublic function setUpdated(\$updated){
+    $codeModel .= "\tpublic function setUpdated(\$updated) {
         \$this->_updated = \$updated;
     }\n\n";
-    $codeModel .= "\tpublic function setUpdatedBy(\$updatedBy){
+    $codeModel .= "\tpublic function setUpdatedBy(\$updatedBy) {
         \$this->_updatedBy = \$updatedBy;
     }\n\n";
     
-	//create getters
-	$codeModel .= "\t//getters\n";
-	$codeModel .= "\tpublic function id(){
+
+	$codeModel .= "\tpublic function id() {
     	return \$this->_id;
     }\n";
-	foreach($attributes as $attribute){
-		$codeModel .= "\tpublic function ".$attribute."(){
+	foreach ($attributes as $attribute) {
+		$codeModel .= "\tpublic function get".ucfirst($attribute)."() {
 		return \$this->_".$attribute.";
    	}\n\n";
 	}
-    $codeModel .= "\tpublic function created(){
+    $codeModel .= "\tpublic function getCreated() {
         return \$this->_created;
     }\n\n";
-    $codeModel .= "\tpublic function createdBy(){
+    $codeModel .= "\tpublic function getCreatedBy() {
         return \$this->_createdBy;
     }\n\n";
-    $codeModel .= "\tpublic function updated(){
+    $codeModel .= "\tpublic function getUpdated() {
         return \$this->_updated;
     }\n\n";
-    $codeModel .= "\tpublic function updatedBy(){
+    $codeModel .= "\tpublic function getUpdatedBy() {
         return \$this->_updatedBy;
     }\n\n";
 	//end of class
@@ -130,55 +136,56 @@ if(isset($_POST['attributes']) and !empty($_POST['attributes'])){
 	$codeModelManager .= "\tprivate \$_db;\n";
 	
 	//create constructor
-	$codeModelManager .= "\n\t//le constructeur
-    public function __construct(\$db){
+	$codeModelManager .= "\n
+    public function __construct(\$db) {
         \$this->_db = \$db;
-    }\n\n\t//BAISC CRUD OPERATIONS\n";
+    }\n\n\n";
 	
 	//create BASIC CRUD OPERATIONS
 	
     /**
 	 * create add method
 	 */
-	$codeModelManager .= "\tpublic function add(".ucfirst($componentName)." \$".$componentName."){
-    	\$query = \$this->_db->prepare(' INSERT INTO t_".$componentName." (\n\t\t";
+	$codeModelManager .= "\tpublic function add(".ucfirst($componentName)." \$".$componentName.") {
+    	\$query = \$this->_db->prepare('INSERT INTO t_".$componentName." (\n\t\t";
 	$codeModelManager .= implode(", ", $attributes);
 	$codeModelManager .= ", created, createdBy)";
 	$codeModelManager .= "\n\t\tVALUES (";
 	$codeModelManager .= ":".implode(", :", $attributes);
 	$codeModelManager .= ", :created, :createdBy)')\n\t\tor die (print_r(\$this->_db->errorInfo()));\n";
 	foreach($attributes as $attribute){
-		$codeModelManager .= "\t\t\$query->bindValue(':".$attribute."', \$".$componentName."->".$attribute."());\n";	
+		$codeModelManager .= "\t\t\$query->bindValue(':".$attribute."', \$".$componentName."->get".ucfirst($attribute)."());\n";
 	}
-    $codeModelManager .= "\t\t\$query->bindValue(':created', \$".$componentName."->created());\n";
-    $codeModelManager .= "\t\t\$query->bindValue(':createdBy', \$".$componentName."->createdBy());\n";
+    $codeModelManager .= "\t\t\$query->bindValue(':created', \$".$componentName."->getCreated());\n";
+    $codeModelManager .= "\t\t\$query->bindValue(':createdBy', \$".$componentName."->getCreatedBy());\n";
 	$codeModelManager .= "\t\t\$query->execute();\n\t\t\$query->closeCursor();\n\t}\n\n";
 	/**
 	 * create update method
 	 */
-	$codeModelManager .= "\tpublic function update(".ucfirst($componentName)." \$".$componentName."){
-    	\$query = \$this->_db->prepare(' UPDATE t_".$componentName." SET \n\t\t";
+	$codeModelManager .= "\tpublic function update(".ucfirst($componentName)." \$".$componentName.") {
+    	\$query = \$this->_db->prepare('UPDATE t_".$componentName." SET \n\t\t";
 	$attributes2 = array();
 	$attributes2 = $attributes;
-	for($i=0; $i<count($attributes2); $i++){
+
+	for ($i=0; $i < count($attributes2); $i++) {
 		$attributes2[$i] .= "=:".$attributes[$i]; 
 	}
 	$codeModelManager .= implode(", ", $attributes2);
 	$codeModelManager .= ", updated=:updated, updatedBy=:updatedBy";
 	$codeModelManager .= "\n\t\tWHERE id=:id";
 	$codeModelManager .= "')\n\t\tor die (print_r(\$this->_db->errorInfo()));\n";
-	$codeModelManager .= "\t\t\$query->bindValue(':id', \$".$componentName."->id());\n";
+	$codeModelManager .= "\t\t\$query->bindValue(':id', \$".$componentName."->getId());\n";
 	foreach($attributes as $attribute){
-		$codeModelManager .= "\t\t\$query->bindValue(':".$attribute."', \$".$componentName."->".$attribute."());\n";	
+		$codeModelManager .= "\t\t\$query->bindValue(':".$attribute."', \$".$componentName."->get".ucfirst($attribute)."());\n";
 	}
-	$codeModelManager .= "\t\t\$query->bindValue(':updated', \$".$componentName."->updated());\n";
-    $codeModelManager .= "\t\t\$query->bindValue(':updatedBy', \$".$componentName."->updatedBy());\n";
+	$codeModelManager .= "\t\t\$query->bindValue(':updated', \$".$componentName."->getUpdated());\n";
+    $codeModelManager .= "\t\t\$query->bindValue(':updatedBy', \$".$componentName."->getUpdatedBy());\n";
 	$codeModelManager .= "\t\t\$query->execute();\n\t\t\$query->closeCursor();\n\t}\n\n";
 	/**
 	 * create delete method
 	 */
-	$codeModelManager .= "\tpublic function delete(\$id){
-    	\$query = \$this->_db->prepare(' DELETE FROM t_".$componentName;
+	$codeModelManager .= "\tpublic function delete(\$id) {
+    	\$query = \$this->_db->prepare('DELETE FROM t_".$componentName;
 	$codeModelManager .= "\n\t\tWHERE id=:id";
 	$codeModelManager .= "')\n\t\tor die (print_r(\$this->_db->errorInfo()));\n";
 	$codeModelManager .= "\t\t\$query->bindValue(':id', \$id);\n";
@@ -186,7 +193,7 @@ if(isset($_POST['attributes']) and !empty($_POST['attributes'])){
 	/**
 	 * create getComponentByID method
 	 */
-	$codeModelManager .= "\tpublic function get".ucfirst($componentName)."ById(\$id){
+	$codeModelManager .= "\tpublic function get".ucfirst($componentName)."ById(\$id) {
     	\$query = \$this->_db->prepare(' SELECT * FROM t_".$componentName;
 	$codeModelManager .= "\n\t\tWHERE id=:id";
 	$codeModelManager .= "')\n\t\tor die (print_r(\$this->_db->errorInfo()));\n";
@@ -198,27 +205,27 @@ if(isset($_POST['attributes']) and !empty($_POST['attributes'])){
 	/**
 	 * create getComponents method
 	 */
-	$codeModelManager .= "\tpublic function get".ucfirst($componentName)."s(){
+	$codeModelManager .= "\tpublic function get".ucfirst($componentName)."s() {
 		\$".$componentName."s = array();\n";
 	$codeModelManager .= "\t\t\$query = \$this->_db->query('SELECT * FROM t_".$componentName."
 		ORDER BY id DESC');\n";
-	$codeModelManager .= "\t\twhile(\$data = \$query->fetch(PDO::FETCH_ASSOC)){\n";
+	$codeModelManager .= "\t\twhile (\$data = \$query->fetch(PDO::FETCH_ASSOC)) {\n";
 	$codeModelManager .= "\t\t\t\$".$componentName."s[] = new ".ucfirst($componentName)."(\$data);\n";
 	$codeModelManager .= "\t\t}\n\t\t\$query->closeCursor();\n\t\treturn \$".$componentName."s;\n\t}\n\n";
 	/**
 	 * create getComponentsByLimits method
 	 */
-	$codeModelManager .= "\tpublic function get".ucfirst($componentName)."sByLimits(\$begin, \$end){
+	$codeModelManager .= "\tpublic function get".ucfirst($componentName)."sByLimits(\$begin, \$end) {
 		\$".$componentName."s = array();\n";
 	$codeModelManager .= "\t\t\$query = \$this->_db->query('SELECT * FROM t_".$componentName."
 		ORDER BY id DESC LIMIT '.\$begin.', '.\$end);\n";
-	$codeModelManager .= "\t\twhile(\$data = \$query->fetch(PDO::FETCH_ASSOC)){\n";
+	$codeModelManager .= "\t\twhile (\$data = \$query->fetch(PDO::FETCH_ASSOC)) {\n";
 	$codeModelManager .= "\t\t\t\$".$componentName."s[] = new ".ucfirst($componentName)."(\$data);\n";
 	$codeModelManager .= "\t\t}\n\t\t\$query->closeCursor();\n\t\treturn \$".$componentName."s;\n\t}\n\n";
 	/**
 	 * create getLastID method
 	 */
-	$codeModelManager .= "\tpublic function getLastId(){
+	$codeModelManager .= "\tpublic function getLastId() {
     	\$query = \$this->_db->query(' SELECT id AS last_id FROM t_".$componentName;
 	$codeModelManager .= "\n\t\tORDER BY id DESC LIMIT 0, 1');\n";
 	$codeModelManager .= "\t\t\$data = \$query->fetch(PDO::FETCH_ASSOC);\n";
@@ -238,9 +245,11 @@ if(isset($_POST['attributes']) and !empty($_POST['attributes'])){
 	$codeSql = "CREATE TABLE IF NOT EXISTS t_".$componentName." (\n";
 	$codeSql .= "\tid INT(11) NOT NULL AUTO_INCREMENT,\n";
 	$tableData = array();
-	for($i=0; $i<count($attributes); $i++){
+
+	for ($i=0; $i<count($attributes); $i++) {
 		$codeSql .= "\t".$attributes[$i]." ".$attributesTypes[$i]." DEFAULT NULL,\n";
 	}
+
     $codeSql .= "\tcreated DATETIME DEFAULT NULL,\n";
     $codeSql .= "\tcreatedBy VARCHAR(50) DEFAULT NULL,\n";
     $codeSql .= "\tupdated DATETIME DEFAULT NULL,\n";
