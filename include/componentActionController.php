@@ -1,121 +1,127 @@
 <?php
 //begin processing
-    $codeActionController = "<?php\nclass ".ucfirst($componentName)."ActionController {\n
-    //attributes
-    protected \$_actionMessage;
-    protected \$_typeMessage;
-    protected \$_source;
-    protected \$_$componentName"."Manager;\n
-    //constructor
-    public function __construct(\$source){
-    \t\$this->_".$componentName."Manager = new ".ucfirst($componentName)."Manager(PDOFactory::getMysqlConnection());
-    \t\$this->_source = \$source;
-    }";
-    
-    $codeActionController .=
-    "\n
-    //getters
-    public function actionMessage(){
-        return \$this->_actionMessage;
-    }
-    \n
-    public function typeMessage(){
-        return \$this->_typeMessage;
-    }
-    \n
-    public function source(){
-        return \$this->_source;
-    }
-    
-    //actions
-    public function add(\$$componentName){
-        if( !empty(\$".$componentName."['".$attributes[0]."']) ){\n";
-            foreach($attributes as $attribute){
-                $codeActionController .= "\t\t\t\$".$attribute." = htmlentities(\$".$componentName."['".$attribute."']);\n";
-            }
-            $codeActionController .= "\t\t\t\$createdBy = \$_SESSION['".$sessionName."']->login();
-            \$created = date('Y-m-d h:i:s');
-            //create object
-            \$".$componentName." = new ".ucfirst($componentName)."(array(\n";
-            foreach($attributes as $attribute){
-                $codeActionController .= "\t\t\t\t'".$attribute."' => \$".$attribute.",\n";
-            }
-            $codeActionController .= "\t\t\t\t'created' => \$created,
-            \t'createdBy' => \$createdBy\n";
-            $codeActionController .= "\t\t\t));
-            //add it to db
-            \$this->_".$componentName."Manager->add(\$".$componentName.");
-            \$this->_actionMessage = \"Opération Valide : ".ucfirst($componentName)." Ajouté(e) avec succès.\";  
-            \$this->_typeMessage = \"success\";
-            \$this->_source = \"view/$componentName\";
+$codeActionController = "<?php\nclass " . $componentNameUpperCase . "ActionController {\n
+//attributes
+protected \$_actionMessage;
+protected \$_typeMessage;
+protected \$_source;
+protected \$_$componentName"."Manager;\n
+
+
+/**
+ * User constructor.
+ * @param \$data
+ */
+public function __construct(\$source) {
+\t\$this->_".$componentName."Manager = new " . $componentNameUpperCase . "Manager(PDOFactory::getMysqlConnection());
+\t\$this->_source = \$source;
+}";
+
+$codeActionController .=
+"\n\n
+public function actionMessage() {
+    return \$this->_actionMessage;
+}
+\n\n
+public function typeMessage() {
+    return \$this->_typeMessage;
+}
+\n\n
+public function source() {
+    return \$this->_source;
+}
+
+
+public function add(\$$componentName) {
+    if ( !empty(\$".$componentName."['".$attributes[0]."']) ) {\n";
+        foreach ($attributes as $attribute) {
+            $codeActionController .= "\t\t\t\$".$attribute." = htmlentities(\$".$componentName."['".$attribute."']);\n";
         }
-        else{
-            \$this->_actionMessage = \"Opération Invalide : Vous devez remplir le champ '".$attributes[0]."'.\";
-            \$this->_typeMessage = \"error\";
-            \$this->_source = \"view/$componentName\";
+        $codeActionController .= "\t\t\t\$createdBy = \$_SESSION['".$sessionName."']->login();
+        \$created = date('Y-m-d h:i:s');
+        //create object
+        \$".$componentName." = new " . $componentNameUpperCase . "(array(\n";
+        foreach ($attributes as $attribute) {
+            $codeActionController .= "\t\t\t\t'".$attribute."' => \$".$attribute.",\n";
         }
+        $codeActionController .= "\t\t\t\t'created' => \$created,
+        \t'createdBy' => \$createdBy\n";
+        $codeActionController .= "\t\t\t));
+        //add it to db
+        \$this->_".$componentName."Manager->add(\$".$componentName.");
+        \$this->_actionMessage = \"Opération Valide : " . $componentNameUpperCase . " Ajouté(e) avec succès.\";  
+        \$this->_typeMessage = \"success\";
+        \$this->_source = \"view/$componentName\";
+    } else {
+        \$this->_actionMessage = \"Opération Invalide : Vous devez remplir le champ '".$attributes[0]."'.\";
+        \$this->_typeMessage = \"error\";
+        \$this->_source = \"view/$componentName\";
     }
-    \n
-    public function update(\$$componentName){
-        if(!empty(\$".$componentName."['".$attributes[0]."'])){\n";
-            "\$id".ucfirst($componentName)." = htmlentities(\$".$componentName."['id".ucfirst($componentName)."'])";
-            foreach($attributes as $attribute){
-                $codeActionController .= "\t\t\t\$".$attribute." = htmlentities(\$".$componentName."['".$attribute."']);\n";
-            }
-            $codeActionController .= "\t\t\t\$updatedBy = \$_SESSION['".$sessionName."']->login();
-            \$updated = date('Y-m-d h:i:s');
-            \$".$componentName." = new ".ucfirst($componentName)."(array(\n";
-            $codeActionController .= "\t\t\t\t'id' => \$id".ucfirst($componentName).",\n";
-            foreach($attributes as $attribute){
-                $codeActionController .= "\t\t\t\t'".$attribute."' => \$".$attribute.",\n";
-            } 
-            $codeActionController .= "\t\t\t\t'updated' => \$updated,
-            \t'updatedBy' => \$updatedBy\n";
-            $codeActionController .= "\t\t\t));
-            \$this->_".$componentName."Manager->update(\$".$componentName.");
-            \$this->_actionMessage = \"Opération Valide : ".ucfirst($componentName)." Modifié(e) avec succès.\";
-            \$this->_typeMessage = \"success\";
-            \$this->_source = \"view/$componentName\";
+}
+\n\n
+public function update(\$$componentName) {
+    if (!empty(\$".$componentName."['".$attributes[0]."'])) {\n";
+        "\$id" . $componentNameUpperCase . " = htmlentities(\$".$componentName."['id" . $componentNameUpperCase . "'])";
+
+        foreach ($attributes as $attribute) {
+            $codeActionController .= "\t\t\t\$".$attribute." = htmlentities(\$".$componentName."['".$attribute."']);\n";
         }
-        else{
-            \$this->_actionMessage = \"Opération Invalide : Vous devez remplir le champ '".$attributes[0]."'.\";
-            \$this->_typeMessage = \"error\";
-            \$this->_source = \"view/$componentName\";
+
+        $codeActionController .= "\t\t\t\$updatedBy = \$_SESSION['".$sessionName."']->login();
+        \$updated = date('Y-m-d h:i:s');
+        \$".$componentName." = new " . $componentNameUpperCase . "(array(\n";
+        $codeActionController .= "\t\t\t\t'id' => \$id" . $componentNameUpperCase . ",\n";
+
+        foreach ($attributes as $attribute) {
+            $codeActionController .= "\t\t\t\t'".$attribute."' => \$".$attribute.",\n";
         }
-    }
-    \n
-    public function delete(\$$componentName){
-        \$id".ucfirst($componentName)." = htmlentities(\$".$componentName."['id".ucfirst($componentName)."']);
-        \$this->_".$componentName."Manager->delete(\$id".ucfirst($componentName).");
-        \$this->_actionMessage = \"Opération Valide : ".ucfirst($componentName)." supprimé(e) avec succès.\";
+
+        $codeActionController .= "\t\t\t\t'updated' => \$updated,
+        \t'updatedBy' => \$updatedBy\n";
+        $codeActionController .= "\t\t\t));
+        \$this->_".$componentName."Manager->update(\$".$componentName.");
+        \$this->_actionMessage = \"Opération Valide : " . $componentNameUpperCase . " Modifié(e) avec succès.\";
         \$this->_typeMessage = \"success\";
         \$this->_source = \"view/$componentName\";
     }
-    \n
-    public function get".ucfirst($componentName)."ById(\$id){
-        return \$this->_".$componentName."Manager->get".ucfirst($componentName)."ById(\$id);
+    else{
+        \$this->_actionMessage = \"Opération Invalide : Vous devez remplir le champ '".$attributes[0]."'.\";
+        \$this->_typeMessage = \"error\";
+        \$this->_source = \"view/$componentName\";
     }
-    \n
-    public function get".ucfirst($componentName)."s(){
-        return  \$this->_".$componentName."Manager->get".ucfirst($componentName)."s();
-    }
-    \n
-    public function get".ucfirst($componentName)."sByLimits(\$begin, \$end){
-        return \$this->_".$componentName."Manager->get".ucfirst($componentName)."sByLimits(\$begin, \$end);
-    }
-    \n
-    public function get".ucfirst($componentName)."sNumber(){
-        return \$this->_".$componentName."Manager->get".ucfirst($componentName)."sNumber();
-    }
-    \n
-    public function getLastId(){
-        return \$this->_".$componentName."Manager->getLastId();
-    }
-    \n}
-    ";
-    
-    //process complete
-    $ressourceActionController = fopen($componentActionControllerLocation, "w");
-    fwrite($ressourceActionController, $codeActionController);
-    fclose($ressourceActionController);
-    
+}
+\n
+public function delete(\$$componentName) {
+    \$id" . $componentNameUpperCase . " = htmlentities(\$".$componentName."['id" . $componentNameUpperCase . "']);
+    \$this->_".$componentName."Manager->delete(\$id" . $componentNameUpperCase . ");
+    \$this->_actionMessage = \"Opération Valide : " . $componentNameUpperCase . " supprimé(e) avec succès.\";
+    \$this->_typeMessage = \"success\";
+    \$this->_source = \"view/$componentName\";
+}
+\n\n
+public function get" . $componentNameUpperCase . "ById(\$id) {
+    return \$this->_".$componentName."Manager->get" . $componentNameUpperCase . "ById(\$id);
+}
+\n\n
+public function get" . $componentNameUpperCase . "s() {
+    return  \$this->_".$componentName."Manager->get" . $componentNameUpperCase . "s();
+}
+\n\n
+public function get" . $componentNameUpperCase . "sByLimits(\$begin, \$end) {
+    return \$this->_".$componentName."Manager->get" . $componentNameUpperCase . "sByLimits(\$begin, \$end);
+}
+\n\n
+public function get" . $componentNameUpperCase . "sNumber() {
+    return \$this->_".$componentName."Manager->get" . $componentNameUpperCase . "sNumber();
+}
+\n\n
+public function getLastId() {
+    return \$this->_".$componentName."Manager->getLastId();
+}
+\n}
+";
+
+//process complete
+$ressourceActionController = fopen($componentActionControllerLocation, "w");
+fwrite($ressourceActionController, $codeActionController);
+fclose($ressourceActionController);
