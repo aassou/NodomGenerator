@@ -73,7 +73,7 @@ session_start();
 				        <option value="VARCHAR(255)">VARCHAR(255)</option>
 				        <option value="TEXT">TEXT</option>
 				        <option value="DATE">DATE</option>
-				        <option value="DATE TIME">DATE TIME</option>
+				        <option value="DATETIME">DATE TIME</option>
 				        <option value="TIME">TIME</option>
 				      </select>
 				    </div>
