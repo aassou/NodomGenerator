@@ -101,7 +101,7 @@ $codeModelManager .= "\n\t\treturn new ".$componentNameUpperCase."(\$data);\n\t}
  * create getComponents method
  */
 $codeModelManager .= "\t/**\n\t * @return array\n\t */\n";
-$codeModelManager .= "\tpublic function getAll() {\$".$componentName."s = array();\n";
+$codeModelManager .= "\tpublic function getAll() {\n\t\t\$".$componentName."s = array();\n";
 $codeModelManager .= "\t\t\$query = \$this->_db->query('SELECT * FROM t_".$componentName." ORDER BY id ASC');\n";
 $codeModelManager .= "\n\t\twhile (\$data = \$query->fetch(PDO::FETCH_ASSOC)) {\n";
 $codeModelManager .= "\t\t\t\$".$componentName."s[] = new ".ucfirst($componentName)."(\$data);\n";
@@ -133,8 +133,7 @@ $codeModelManager .= "\t/**\n\t * @return mixed\n\t */";
 $codeModelManager .= "\n\tpublic function getLastId() {
     \t\$query = \$this->_db->query(' SELECT id AS last_id FROM t_$componentName ORDER BY id DESC LIMIT 0, 1');\n";
 $codeModelManager .= "\t\t\$data = \$query->fetch(PDO::FETCH_ASSOC);\n";
-$codeModelManager .= "\t\t\$id = \$data['last_id'];\n";
-$codeModelManager .= "\n\t\treturn \$id;\n\t}\n";
+$codeModelManager .= "\n\t\treturn \$data['last_id'] ?? 0;\n\t}\n";
 //end of class
 $codeModelManager .= "}\n";
 

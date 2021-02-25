@@ -8,7 +8,17 @@ if ( isset(\$_SESSION['$sessionName']) ) {
     //create Controller
     \$".$componentName."ActionController = new AppController('".$componentName."');
     //get objects
-    \$".$componentName."s = \$".$componentName."ActionController->getAll(); 
+    \$".$componentName."s = \$".$componentName."ActionController->getAll();
+    //breadcurmb
+    \$breadcrumb = new Breadcrumb(
+        [
+            [
+                'class' => '',
+                'link' => '" . $componentName . ".php',
+                'title' => '" . $componentName . "'
+            ]
+        ]
+    );
     /*\$".$componentName."sNumber = \$".$componentName."ActionController->getAllNumber(); 
     \$p = 1;
     if ( \$".$componentName."sNumber != 0 ) {
@@ -41,11 +51,7 @@ if ( isset(\$_SESSION['$sessionName']) ) {
             <div class=\"page-content\">
                 <div class=\"container-fluid\">
                     <div class=\"row-fluid\">
-                        <div class=\"span12\">
-                            <ul class=\"breadcrumb\">
-                                <li><i class=\"icon-home\"></i><a href=\"dashboard.php\">Accueil</a><i class=\"icon-angle-right\"></i></li>
-                            </ul>
-                        </div>
+                        <?= \$breadcrumb->getBreadcrumb() ?>
                     </div>
                     <div class=\"row-fluid\">
                         <div class=\"span12\">
@@ -118,17 +124,17 @@ if ( isset(\$_SESSION['$sessionName']) ) {
                                             ?>
                                             <tr>
                                                 <td class=\"hidden-phone\">
-                                                    <a href=\"#delete".ucfirst($componentName)."<?= \$".$componentName."->id() ?>\" data-toggle=\"modal\" data-id=\"<?= \$".$componentName."->id() ?>\" class=\"btn mini red\"><i class=\"icon-remove\"></i></a>
-                                                    <a href=\"#update".ucfirst($componentName)."<?= \$".$componentName."->id() ?>\" data-toggle=\"modal\" data-id=\"<?= \$".$componentName."->id() ?>\" class=\"btn mini green\"><i class=\"icon-refresh\"></i></a>
+                                                    <a href=\"#delete".ucfirst($componentName)."<?= \$".$componentName."->getId() ?>\" data-toggle=\"modal\" data-id=\"<?= \$".$componentName."->getId() ?>\" class=\"btn mini red\"><i class=\"icon-remove\"></i></a>
+                                                    <a href=\"#update".ucfirst($componentName)."<?= \$".$componentName."->getId() ?>\" data-toggle=\"modal\" data-id=\"<?= \$".$componentName."->getId() ?>\" class=\"btn mini green\"><i class=\"icon-refresh\"></i></a>
                                                 </td>";
                                                 foreach ( $attributes as $attribute ) {
                                                 $codeView .= "
-                                                <td><?= \$".$componentName."->".$attribute."() ?></td>";
+                                                <td><?= \$".$componentName."->get".ucfirst($attribute)."() ?></td>";
                                                 }
                                                 $codeView .="
                                             </tr> 
                                             <!-- update".ucfirst($componentName)." box begin -->
-                                            <div id=\"update".ucfirst($componentName)."<?= \$".$componentName."->id() ?>\" class=\"modal hide fade in\" tabindex=\"-1\" role=\"dialog\" aria-hidden=\"false\">
+                                            <div id=\"update".ucfirst($componentName)."<?= \$".$componentName."->getId() ?>\" class=\"modal hide fade in\" tabindex=\"-1\" role=\"dialog\" aria-hidden=\"false\">
                                                 <div class=\"modal-header\">
                                                     <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\"></button>
                                                     <h3>Modifier Info ".ucfirst($componentName)."</h3>
@@ -140,7 +146,7 @@ if ( isset(\$_SESSION['$sessionName']) ) {
                                                         <div class=\"control-group\">
                                                             <label class=\"control-label\">".ucfirst($attribute)."</label>
                                                             <div class=\"controls\">
-                                                                <input required=\"required\" type=\"text\" name=\"".$attribute."\"  value=\"<?= \$".$componentName."->".$attribute."() ?>\" />
+                                                                <input required=\"required\" type=\"text\" name=\"".$attribute."\"  value=\"<?= \$".$componentName."->get".ucfirst($attribute)."() ?>\" />
                                                             </div>
                                                         </div>";
                                                     }
@@ -149,7 +155,7 @@ if ( isset(\$_SESSION['$sessionName']) ) {
                                                     <div class=\"modal-footer\">
                                                         <div class=\"control-group\">
                                                             <div class=\"controls\">
-                                                                <input type=\"hidden\" name=\"id".ucfirst($componentName)."\" value=\"<?= \$".$componentName."->id() ?>\" />
+                                                                <input type=\"hidden\" name=\"id\" value=\"<?= \$".$componentName."->getId() ?>\" />
                                                                 <input type=\"hidden\" name=\"action\" value=\"update\" />
                                                                 <input type=\"hidden\" name=\"source\" value=\"".$componentName."\" />    
                                                                 <button class=\"btn\" data-dismiss=\"modal\" aria-hidden=\"true\">Non</button>
@@ -161,19 +167,19 @@ if ( isset(\$_SESSION['$sessionName']) ) {
                                             </div>
                                             <!-- update".ucfirst($componentName)." box end --> 
                                             <!-- delete".ucfirst($componentName)." box begin -->
-                                            <div id=\"delete".ucfirst($componentName)."<?= \$".$componentName."->id() ?>\" class=\"modal modal-big hide fade in\" tabindex=\"-1\" role=\"dialog\" aria-hidden=\"false\">
+                                            <div id=\"delete".ucfirst($componentName)."<?= \$".$componentName."->getId() ?>\" class=\"modal modal-big hide fade in\" tabindex=\"-1\" role=\"dialog\" aria-hidden=\"false\">
                                                 <div class=\"modal-header\">
                                                     <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\"></button>
                                                     <h3>Supprimer ".ucfirst($componentName)."</h3>
                                                 </div>
                                                 <form class=\"form-horizontal\" action=\"../app/Dispatcher.php\" method=\"post\">
                                                     <div class=\"modal-body\">
-                                                        <h4 class=\"dangerous-action\">Êtes-vous sûr de vouloir supprimer ".ucfirst($componentName)." : <?= \$".$componentName."->".$attributes[0]."() ?> ? Cette action est irréversible!</h4>
+                                                        <h4 class=\"dangerous-action\">Êtes-vous sûr de vouloir supprimer ".ucfirst($componentName)." : <?= \$".$componentName."->get".ucfirst($attributes[0])."() ?> ? Cette action est irréversible!</h4>
                                                     </div>
                                                     <div class=\"modal-footer\">
                                                         <div class=\"control-group\">
                                                             <div class=\"controls\">
-                                                                <input type=\"hidden\" name=\"id".ucfirst($componentName)."\" value=\"<?= \$".$componentName."->id() ?>\" />
+                                                                <input type=\"hidden\" name=\"id\" value=\"<?= \$".$componentName."->getId() ?>\" />
                                                                 <input type=\"hidden\" name=\"action\" value=\"delete\" />
                                                                 <input type=\"hidden\" name=\"source\" value=\"".$componentName."\" />    
                                                                 <button class=\"btn\" data-dismiss=\"modal\" aria-hidden=\"true\">Non</button>
