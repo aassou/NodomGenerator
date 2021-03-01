@@ -108,13 +108,13 @@ if ( isset(\$_SESSION['$sessionName']) ) {
                                     </div>
                                     <table class=\"table table-striped table-bordered table-hover\" id=\"sample_2\">
                                         <thead>
-                                            <tr>
-                                                <th class=\"t10 hidden-phone\">Actions</th>";
+                                            <tr>";
                                                 foreach ( $attributes as $attribute ) {
                                                 $codeView .= "
                                                 <th class=\"t10\">".ucfirst($attribute)."</th>";
                                                 }
                                                 $codeView .="
+                                                <th class=\"t10 hidden-phone\">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -122,16 +122,16 @@ if ( isset(\$_SESSION['$sessionName']) ) {
                                             //if ( \$".$componentName."sNumber != 0 ) { 
                                             foreach ( \$".$componentName."s as \$".$componentName." ) {
                                             ?>
-                                            <tr>
-                                                <td class=\"hidden-phone\">
-                                                    <a href=\"#delete".ucfirst($componentName)."<?= \$".$componentName."->getId() ?>\" data-toggle=\"modal\" data-id=\"<?= \$".$componentName."->getId() ?>\" class=\"btn mini red\"><i class=\"icon-remove\"></i></a>
-                                                    <a href=\"#update".ucfirst($componentName)."<?= \$".$componentName."->getId() ?>\" data-toggle=\"modal\" data-id=\"<?= \$".$componentName."->getId() ?>\" class=\"btn mini green\"><i class=\"icon-refresh\"></i></a>
-                                                </td>";
+                                            <tr>";
                                                 foreach ( $attributes as $attribute ) {
                                                 $codeView .= "
                                                 <td><?= \$".$componentName."->get".ucfirst($attribute)."() ?></td>";
                                                 }
                                                 $codeView .="
+                                                <td class=\"hidden-phone\">
+                                                    <a href=\"#update".ucfirst($componentName)."<?= \$".$componentName."->getId() ?>\" data-toggle=\"modal\" data-id=\"<?= \$".$componentName."->getId() ?>\" class=\"btn mini green\"><i class=\"icon-refresh\"></i></a>
+                                                    <a href=\"#delete".ucfirst($componentName)."<?= \$".$componentName."->getId() ?>\" data-toggle=\"modal\" data-id=\"<?= \$".$componentName."->getId() ?>\" class=\"btn mini red\"><i class=\"icon-remove\"></i></a>
+                                                </td>
                                             </tr> 
                                             <!-- update".ucfirst($componentName)." box begin -->
                                             <div id=\"update".ucfirst($componentName)."<?= \$".$componentName."->getId() ?>\" class=\"modal hide fade in\" tabindex=\"-1\" role=\"dialog\" aria-hidden=\"false\">
