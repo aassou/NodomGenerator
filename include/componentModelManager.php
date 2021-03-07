@@ -123,8 +123,7 @@ $codeModelManager .= "\t/**\n\t * @return mixed\n\t */\n";
 $codeModelManager .= "\tpublic function getAllNumber() {
     \t\$query = \$this->_db->query('SELECT COUNT(*) AS ".$componentName."sNumber FROM t_".$componentName."');
     \t\$data = \$query->fetch(PDO::FETCH_ASSOC);
-    \t\$".$componentName." = \$data['".$componentName."sNumber'];
-    \n\t\treturn \$".$componentName.";
+    \n\t\treturn \$data['".$componentName."sNumber'];
 \t}\n\n";
 /**
  * create getLastID method
