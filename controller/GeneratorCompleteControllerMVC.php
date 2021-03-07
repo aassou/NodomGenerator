@@ -34,7 +34,7 @@ if(isset($_POST['attributes']) and !empty($_POST['attributes'])){
     $componentPrintLocation = $_SESSION['componentLocation']."/print/".$componentPrint;
     //Application SESSION Name
     $sessionName = explode('/', $_SESSION['componentLocation']);
-    $sessionName = "user".$sessionName[sizeof($sessionName)-1];
+    $sessionName = "user".strtolower($sessionName[sizeof($sessionName)-1]);
     /************************************************************************************
      *********                      ComponentModel Creation                     *********           
      ************************************************************************************/
