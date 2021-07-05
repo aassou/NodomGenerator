@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="e85bbfd5-e85a-4c89-9c0b-57ad487b6151" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/GeneratorCompleteControllerMVC.php" beforeDir="false" afterPath="$PROJECT_DIR$/controller/GeneratorCompleteControllerMVC.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/componentView.php" beforeDir="false" afterPath="$PROJECT_DIR$/include/componentView.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,10 +23,12 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -41,16 +43,16 @@
       <workItem from="1610806612280" duration="599000" />
       <workItem from="1610894062356" duration="11000" />
       <workItem from="1614256085810" duration="72000" />
+      <workItem from="1615160411251" duration="1206000" />
+      <workItem from="1617114354612" duration="639000" />
+      <workItem from="1624895093220" duration="816000" />
+      <workItem from="1625138517240" duration="91000" />
+      <workItem from="1625149495265" duration="837000" />
+      <workItem from="1625493765436" duration="45000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="639" y="278" width="1190" height="548" key="find.popup" timestamp="1615135965933">
-      <screen x="0" y="27" width="1920" height="1053" />
-    </state>
-    <state x="639" y="278" width="1190" height="548" key="find.popup/0.27.1920.1053@0.27.1920.1053" timestamp="1615135965933" />
   </component>
 </project>

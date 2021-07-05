@@ -2,14 +2,18 @@
 //begin processing
 $codeView = 
 "<?php
+
 require('../app/classLoad.php');
 session_start();
-if ( isset(\$_SESSION['$sessionName']) ) {
-    //create Controller
-    \$".$componentName."ActionController = new AppController('".$componentName."');
-    //get objects
+
+if (isset(\$_SESSION['$sessionName'])) {
+    // Create Controller
+    \$".$componentName."ActionController = new ".ucfirst($componentName)."ActionController('".$componentName."');
+    
+    // Vars and objects
     \$".$componentName."s = \$".$componentName."ActionController->getAll();
-    //breadcurmb
+    
+    // Breadcurmb
     \$breadcrumb = new Breadcrumb(
         [
             [
@@ -19,6 +23,7 @@ if ( isset(\$_SESSION['$sessionName']) ) {
             ]
         ]
     );
+    
     /*\$".$componentName."sNumber = \$".$componentName."ActionController->getAllNumber(); 
     \$p = 1;
     if ( \$".$componentName."sNumber != 0 ) {
