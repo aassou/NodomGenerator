@@ -45,7 +45,7 @@ if (isset(\$_SESSION['$sessionName'])) {
 <!--[if IE 9]> <html lang=\"en\" class=\"ie9\"> <![endif]-->
 <!--[if !IE]><!--> <html lang=\"en\"> <!--<![endif]-->
     <head>
-        <?php include('../include/head.php') ?>
+        <?php include('../include/header.php') ?>
     </head>
     <body class=\"fixed-top\">
         <div class=\"header navbar navbar-inverse navbar-fixed-top\">
