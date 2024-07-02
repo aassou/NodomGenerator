@@ -1,12 +1,12 @@
 <?php
-//create class name
+
 $codeModel = "<?php
 
-/**
- * Class $componentNameUpperCase
- */
-class $componentNameUpperCase {
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
 
+class $componentNameUpperCase {
     private \$_id;
 ";
 
@@ -19,18 +19,13 @@ $codeModel .= "\tprivate \$_created;
     private \$_updated;
     private \$_updatedBy;
 
-    /**
-     * $componentNameUpperCase constructor.
-     * @param \$data
-     */
-    public function __construct(\$data) {
+    public function __construct(array \$data) 
+    {
         \$this->hydrate(\$data);
     }
 
-    /**
-     * @param \$data
-     */
-    public function hydrate(\$data) {
+    public function hydrate(array \$data) 
+    {
         foreach (\$data as \$key => \$value) {
             \$method = 'set'.ucfirst(\$key);
             
@@ -40,9 +35,8 @@ $codeModel .= "\tprivate \$_created;
         }
     }
 
-    //setters
-    
-    public function setId(\$id) {
+    public function setId(\$id) 
+    {
         \$this->_id = \$id;
     } 
 ";
@@ -50,31 +44,35 @@ $codeModel .= "\tprivate \$_created;
 //create setters
 foreach ($attributes as $attribute) {
     $codeModel .= "
-    public function set".ucfirst($attribute)."(\$".$attribute.") {
+    public function set".ucfirst($attribute)."(\$".$attribute.") 
+    {
         \$this->_".$attribute." = \$".$attribute.";
-    }";
+    }
+    ";
 }
 $codeModel .= "
-    
-    public function setCreated(\$created) {
+    public function setCreated(\$created) 
+    {
         \$this->_created = \$created;
     }
     
-    public function setCreatedBy(\$createdBy) {
+    public function setCreatedBy(\$createdBy) 
+    {
         \$this->_createdBy = \$createdBy;
     }
     
-    public function setUpdatedBy(\$updatedBy) {
+    public function setUpdatedBy(\$updatedBy) 
+    {
         \$this->_updatedBy = \$updatedBy;
     }    
     
-    public function setUpdated(\$updated) {
+    public function setUpdated(\$updated) 
+    {
         \$this->_updated = \$updated;
     }
     
-    //getters
-    
-    public function getId() {
+    public function getId() 
+    {
         return \$this->_id;
     }
 ";
@@ -83,25 +81,30 @@ $codeModel .= "
 
 foreach ($attributes as $attribute) {
     $codeModel .= "
-    public function get".ucfirst($attribute)."() {
+    public function get".ucfirst($attribute)."() 
+    {
         return \$this->_".$attribute.";
     }
     ";
 }
 $codeModel .= "
-    public function getCreated() {
+    public function getCreated() 
+    {
         return \$this->_created;
     }
     
-    public function getCreatedBy() {
+    public function getCreatedBy() 
+    {
         return \$this->_createdBy;
     }
     
-    public function getUpdated() {
+    public function getUpdated() 
+    {
         return \$this->_updated;
     }
     
-    public function getUpdatedBy() {
+    public function getUpdatedBy() 
+    {
         return \$this->_updatedBy;
     }
 }

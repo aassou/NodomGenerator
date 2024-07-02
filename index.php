@@ -73,7 +73,7 @@ session_start();
 				    </div>
 				    <div class="large-4 medium-4 columns">
 				      <label>Project Path</label>
-				      <input type="text" name="componentLocation" placeholder="/var/www/html/" value="/var/www/html/" />
+				      <input type="text" name="componentLocation" placeholder="/home/abdel/workspace/mido-job" value="/home/abdel/workspace/mido-job" />
 				    </div>
 				    <div class="large-4 medium-4 columns">
 				      <label>Attributes Number</label>

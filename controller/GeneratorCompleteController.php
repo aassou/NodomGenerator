@@ -307,11 +307,11 @@ if(isset($_POST['attributes']) and !empty($_POST['attributes'])){
             $codeActionController .= "\t\t\t));
             //add it to db
             \$".$componentName."Manager->add(\$".$componentName.");
-            \$actionMessage = \"Opération Valide : ".ucfirst($componentName)." Ajouté(e) avec succès.\";  
+            \$actionMessage = \"Gültige Aktion : ".ucfirst($componentName)." Ajouté(e) avec succès.\";  
             \$typeMessage = \"success\";
         }
         else{
-            \$actionMessage = \"Erreur Ajout ".$componentName." : Vous devez remplir le champ '".$attributes[0]."'.\";
+            \$actionMessage = \"Erreur Ajout ".$componentName." : Füllen Sie die erforderlichen Eingaben aus..\";
             \$typeMessage = \"error\";
         }
     }
@@ -334,11 +334,11 @@ if(isset($_POST['attributes']) and !empty($_POST['attributes'])){
             \t'updatedBy' => \$updatedBy\n";
             $codeActionController .= "\t\t\t));
             \$".$componentName."Manager->update(\$".$componentName.");
-            \$actionMessage = \"Opération Valide : ".ucfirst($componentName)." Modifié(e) avec succès.\";
+            \$actionMessage = \"Gültige Aktion : ".ucfirst($componentName)." Modifié(e) avec succès.\";
             \$typeMessage = \"success\";
         }
         else{
-            \$actionMessage = \"Erreur Modification ".ucfirst($componentName)." : Vous devez remplir le champ '".$attributes[0]."'.\";
+            \$actionMessage = \"Erreur Modification ".ucfirst($componentName)." : Füllen Sie die erforderlichen Eingaben aus..\";
             \$typeMessage = \"error\";
         }
     }
@@ -347,7 +347,7 @@ if(isset($_POST['attributes']) and !empty($_POST['attributes'])){
     else if(\$action == \"delete\"){
         \$id".ucfirst($componentName)." = htmlentities(\$_POST['id".ucfirst($componentName)."']);
         \$".$componentName."Manager->delete(\$id".ucfirst($componentName).");
-        \$actionMessage = \"Opération Valide : ".ucfirst($componentName)." supprimé(e) avec succès.\";
+        \$actionMessage = \"Gültige Aktion : ".ucfirst($componentName)." supprimé(e) avec succès.\";
         \$typeMessage = \"success\";
     }
     //Action Delete Processing End
